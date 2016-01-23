@@ -1,0 +1,56 @@
+nzbget:
+  container_name: nzbget
+  ports:
+  - "6789:6789"
+  volumes:
+  - /dockerfs/nzbget/config:/config
+  - /dockerfs/nzbget/config:/downloads
+  - /media/downloads:/downloads_actual
+  image: linuxserver/nzbget
+  env_file: env
+
+sonarr:
+  container_name: sonarr
+  ports:
+  - "8989:8989"
+  volumes:
+  - /dockerfs/sonarr/config:/config
+  - /media:/media
+  - /dev/rtc:/dev/rtc:ro
+  - /media/downloads:/downloads_actual
+  image: linuxserver/sonarr
+  env_file: env
+
+couchpotato:
+  container_name: couchpotato
+  ports:
+  - "5050:5050"
+  volumes:
+  - /etc/localtime:/etc/localtime:ro
+  - /dockerfs/couchpotato/config:/config
+  - /media/downloads:/downloads
+  - /media/movies:/movies
+  image: linuxserver/couchpotato
+  env_file: env
+
+plexpy:
+  container_name: plexpy
+  ports:
+  - "8181:8181"
+  volumes:
+  - /etc/localtime:/etc/localtime:ro
+  - /dockerfs/plexpy/config:/config
+  image: linuxserver/plexpy
+  env_file: env
+
+deluge:
+  container_name: deluge
+  volumes:
+  - /etc/localtime:/etc/localtime:ro
+  - /dockerfs/deluge/config:/config
+  - /media/downloads:/downloads
+  image: linuxserver/deluge
+  env_file: env
+  net: host
+
+
