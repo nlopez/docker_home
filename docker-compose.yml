@@ -8,6 +8,7 @@ nzbget:
   - /dockerfs/nzbget/config:/downloads
   - /media/downloads:/downloads_actual
   env_file: env
+  restart: unless-stopped
 
 sonarr:
   container_name: sonarr
@@ -20,6 +21,7 @@ sonarr:
   - /dev/rtc:/dev/rtc:ro
   - /media/downloads:/downloads_actual
   env_file: env
+  restart: unless-stopped
 
 couchpotato:
   container_name: couchpotato
@@ -32,6 +34,7 @@ couchpotato:
   - /media/downloads:/downloads
   - /media/movies:/movies
   env_file: env
+  restart: unless-stopped
 
 plexpy:
   container_name: plexpy
@@ -42,6 +45,7 @@ plexpy:
   - /etc/localtime:/etc/localtime:ro
   - /dockerfs/plexpy/config:/config
   env_file: env
+  restart: unless-stopped
 
 deluge:
   container_name: deluge
@@ -52,12 +56,14 @@ deluge:
   - /media/downloads:/media/downloads
   env_file: env
   net: host
+  restart: unless-stopped
 
 consul:
   container_name: consul
   image: gliderlabs/consul-server
   net: host
   command: -bind 192.168.239.6 -bootstrap
+  restart: unless-stopped
 
 registrator:
   container_name: registrator
@@ -66,3 +72,5 @@ registrator:
   volumes:
   - /var/run/docker.sock:/tmp/docker.sock
   command: consul://localhost:8500
+  restart: unless-stopped
+
