@@ -6,7 +6,7 @@ nzbget:
   volumes:
   - /dockerfs/nzbget/config:/config
   - /dockerfs/nzbget/config:/downloads
-  - /media/downloads:/downloads_actual
+  - /mnt/media/downloads:/downloads_actual
   env_file: env
   restart: unless-stopped
 
@@ -17,9 +17,9 @@ sonarr:
   - "8989:8989"
   volumes:
   - /dockerfs/sonarr/config:/config
-  - /media:/media
+  - /mnt/media:/media
   - /dev/rtc:/dev/rtc:ro
-  - /media/downloads:/downloads_actual
+  - /mnt/media/downloads:/downloads_actual
   env_file: env
   restart: unless-stopped
 
@@ -31,8 +31,8 @@ couchpotato:
   volumes:
   - /etc/localtime:/etc/localtime:ro
   - /dockerfs/couchpotato/config:/config
-  - /media/downloads:/downloads
-  - /media/movies:/movies
+  - /mnt/media/downloads:/downloads
+  - /mnt/media/movies:/movies
   env_file: env
   restart: unless-stopped
 
@@ -53,7 +53,7 @@ deluge:
   volumes:
   - /etc/localtime:/etc/localtime:ro
   - /dockerfs/deluge/config:/config
-  - /media/downloads:/media/downloads
+  - /mnt/media/downloads:/media/downloads
   env_file: env
   net: host
   restart: unless-stopped
