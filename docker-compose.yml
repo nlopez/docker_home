@@ -2,11 +2,11 @@ nzbget:
   container_name: nzbget
   image: linuxserver/nzbget
   ports:
-  - "6789:6789"
+    - "6789:6789"
   volumes:
-  - /dockerfs/nzbget/config:/config
-  - /dockerfs/nzbget/config:/downloads
-  - /mnt/media/downloads:/downloads_actual
+    - /dockerfs/nzbget/config:/config
+    - /dockerfs/nzbget/config:/downloads
+    - /mnt/media/downloads:/downloads_actual
   env_file: env
   restart: unless-stopped
 
@@ -14,12 +14,12 @@ sonarr:
   container_name: sonarr
   image: linuxserver/sonarr
   ports:
-  - "8989:8989"
+    - "8989:8989"
   volumes:
-  - /dockerfs/sonarr/config:/config
-  - /mnt/media:/media
-  - /dev/rtc:/dev/rtc:ro
-  - /mnt/media/downloads:/downloads_actual
+    - /dockerfs/sonarr/config:/config
+    - /mnt/media:/media
+    - /dev/rtc:/dev/rtc:ro
+    - /mnt/media/downloads:/downloads_actual
   env_file: env
   restart: unless-stopped
 
@@ -27,12 +27,12 @@ couchpotato:
   container_name: couchpotato
   image: linuxserver/couchpotato
   ports:
-  - "5050:5050"
+    - "5050:5050"
   volumes:
-  - /etc/localtime:/etc/localtime:ro
-  - /dockerfs/couchpotato/config:/config
-  - /mnt/media/downloads:/downloads
-  - /mnt/media/movies:/movies
+    - /etc/localtime:/etc/localtime:ro
+    - /dockerfs/couchpotato/config:/config
+    - /mnt/media/downloads:/downloads
+    - /mnt/media/movies:/movies
   env_file: env
   restart: unless-stopped
 
@@ -40,10 +40,11 @@ plexpy:
   container_name: plexpy
   image: linuxserver/plexpy
   ports:
-  - "8181:8181"
+    - "8181:8181"
   volumes:
-  - /etc/localtime:/etc/localtime:ro
-  - /dockerfs/plexpy/config:/config
+    - /etc/localtime:/etc/localtime:ro
+    - /dockerfs/plexpy/config:/config
+    - /mnt/plex_logs:/logs:ro
   env_file: env
   restart: unless-stopped
 
@@ -51,9 +52,9 @@ deluge:
   container_name: deluge
   image: linuxserver/deluge
   volumes:
-  - /etc/localtime:/etc/localtime:ro
-  - /dockerfs/deluge/config:/config
-  - /mnt/media/downloads:/media/downloads
+    - /etc/localtime:/etc/localtime:ro
+    - /dockerfs/deluge/config:/config
+    - /mnt/media/downloads:/media/downloads
   env_file: env
   net: host
   restart: unless-stopped
@@ -70,7 +71,7 @@ registrator:
   image: gliderlabs/registrator
   net: host
   volumes:
-  - /var/run/docker.sock:/tmp/docker.sock
+    - /var/run/docker.sock:/tmp/docker.sock
   command: consul://localhost:8500
   restart: unless-stopped
 
