@@ -77,3 +77,29 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock
     command: consul://localhost:8500
     restart: unless-stopped
+
+  owncloud_db:
+    container_name: owncloud_db
+    image: mariadb
+    volumes:
+      - /dockerfs/owncloud_db/data:/var/lib/mysql
+      - /dockerfs/owncloud_db/config:/etc/mysql/conf.d
+    environment:
+      - MYSQL_DATABASE: 'owncloud'
+      - MYSQL_USER: 'owncloud'
+    env_file:
+      - owncloud_db_secrets.env
+    restart: unless-stopped
+
+  owncloud:
+    container_name: owncloud
+    image: owncloud
+    volumes:
+      - /dockerfs/owncloud/apps:/var/www/html/apps
+      - /dockerfs/owncloud/config:/var/www/html/config
+      - /mnt/owncloud:/var/www/html/data
+    ports:
+      - "8080:80"
+    links:
+      - "owncloud_db"
+    restart: unless-stopped
