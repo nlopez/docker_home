@@ -85,8 +85,8 @@ services:
       - /dockerfs/owncloud_db/data:/var/lib/mysql
       - /dockerfs/owncloud_db/config:/etc/mysql/conf.d
     environment:
-      - MYSQL_DATABASE: 'owncloud'
-      - MYSQL_USER: 'owncloud'
+      - MYSQL_DATABASE=owncloud
+      - MYSQL_USER=owncloud
     env_file:
       - owncloud_db_secrets.env
     restart: unless-stopped
