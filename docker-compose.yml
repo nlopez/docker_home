@@ -93,7 +93,7 @@ services:
 
   owncloud:
     container_name: owncloud
-    image: owncloud
+    image: owncloud:9.0.2
     volumes:
       - /dockerfs/owncloud/apps:/var/www/html/apps
       - /dockerfs/owncloud/config:/var/www/html/config
