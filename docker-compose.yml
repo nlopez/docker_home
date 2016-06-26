@@ -93,11 +93,14 @@ services:
 
   owncloud:
     container_name: owncloud
-    image: owncloud:9.0.2
+    image: wonderfall/nextcloud
+    environment:
+      - UID=1001
+      - GID=1001
     volumes:
-      - /dockerfs/owncloud/apps:/var/www/html/apps
-      - /dockerfs/owncloud/config:/var/www/html/config
-      - /mnt/owncloud:/var/www/html/data
+      - /mnt/owncloud:/data
+      - /dockerfs/owncloud/config:/config
+      - /dockerfs/owncloud/apps:/apps2
     ports:
       - "8080:80"
     links:
