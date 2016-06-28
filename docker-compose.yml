@@ -11,7 +11,7 @@ services:
       - /dockerfs/nzbget/config:/downloads
       - /mnt/media/downloads:/downloads_actual
     env_file: env
-    restart: unless-stopped
+    restart: always
 
   sonarr:
     container_name: sonarr
@@ -24,7 +24,7 @@ services:
       - /dev/rtc:/dev/rtc:ro
       - /mnt/media/downloads:/downloads_actual
     env_file: env
-    restart: unless-stopped
+    restart: always
 
   couchpotato:
     container_name: couchpotato
@@ -37,7 +37,7 @@ services:
       - /mnt/media/downloads:/downloads
       - /mnt/media/movies:/movies
     env_file: env
-    restart: unless-stopped
+    restart: always
 
   plexpy:
     container_name: plexpy
@@ -49,7 +49,7 @@ services:
       - /dockerfs/plexpy/config:/config
       - /mnt/plex_logs:/logs:ro
     env_file: env
-    restart: unless-stopped
+    restart: always
 
   deluge:
     container_name: deluge
@@ -60,14 +60,14 @@ services:
       - /mnt/media/downloads:/media/downloads
     env_file: env
     network_mode: host
-    restart: unless-stopped
+    restart: always
 
   consul:
     container_name: consul
     image: gliderlabs/consul-server
     network_mode: host
     command: -bind 192.168.239.6 -bootstrap
-    restart: unless-stopped
+    restart: always
 
   registrator:
     container_name: registrator
@@ -76,7 +76,7 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     command: consul://localhost:8500
-    restart: unless-stopped
+    restart: always
 
   owncloud_db:
     container_name: owncloud_db
@@ -89,7 +89,7 @@ services:
       - MYSQL_USER=owncloud
     env_file:
       - owncloud_db_secrets.env
-    restart: unless-stopped
+    restart: always
 
   owncloud:
     container_name: owncloud
@@ -105,4 +105,15 @@ services:
       - "8080:80"
     links:
       - "owncloud_db"
-    restart: unless-stopped
+    restart: always
+
+  syncthing:
+    container_name: syncthing
+    image: linuxserver/syncthing
+    network_mode: host
+    env_file: env
+    volumes:
+      - /dockerfs/syncthing/config:/config
+      - /mnt/syncthing:/mnt/syncthing
+    restart: always
+
