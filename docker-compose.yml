@@ -107,6 +107,23 @@ services:
       - "owncloud_db"
     restart: always
 
+  syncthing_discovery:
+    container_name: syncthing_discovery
+    image: syncthing/discosrv
+    ports:
+      - "8443:8443"
+    volumes:
+      - /dockerfs/syncthing_discovery/data:/home/discosrv
+    restart: always
+    command: /usr/local/discosrv-linux-amd64/discosrv \
+      -limit-avg 10 \
+      -limit-cache 25000 \
+      -db-dir /home/discosrv/db \
+      -stats-file /home/discosrv/stats \
+      -stats-intv 300 \
+      -http
+
+
   syncthing:
     container_name: syncthing
     image: linuxserver/syncthing
