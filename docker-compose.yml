@@ -78,43 +78,6 @@ services:
     command: consul://localhost:8500
     restart: always
 
-  owncloud_db:
-    container_name: owncloud_db
-    image: mariadb
-    volumes:
-      - /dockerfs/owncloud_db/data:/var/lib/mysql
-      - /dockerfs/owncloud_db/config:/etc/mysql/conf.d
-    environment:
-      - MYSQL_DATABASE=owncloud
-      - MYSQL_USER=owncloud
-    env_file:
-      - owncloud_db_secrets.env
-    restart: always
-
-  owncloud:
-    container_name: owncloud
-    image: wonderfall/nextcloud
-    environment:
-      - UID=1001
-      - GID=1001
-    volumes:
-      - /mnt/owncloud:/data
-      - /dockerfs/owncloud/config:/config
-      - /dockerfs/owncloud/apps:/apps2
-    ports:
-      - "8080:80"
-    links:
-      - "owncloud_db"
-    restart: always
-
-  syncthing_discovery:
-    container_name: syncthing_discovery
-    image: syncthing_discovery
-    ports:
-      - "8443:8443"
-    restart: always
-    command: -http
-
   syncthing:
     container_name: syncthing
     image: linuxserver/syncthing
