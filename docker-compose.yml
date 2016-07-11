@@ -113,5 +113,8 @@ services:
     environment:
       # http://gliderlabs.com/registrator/latest/user/services/#container-overrides
       - SERVICE_NAME=pritunl
+    volumes:
+      - /dockerfs/pritunl/pritunl:/var/lib/pritunl
+      - /dockerfs/pritunl/mongodb:/var/lib/mongodb
     restart: always
 
