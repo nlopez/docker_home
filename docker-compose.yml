@@ -108,10 +108,10 @@ services:
   pritunl:
     container_name: pritunl
     image: michelkaeser/docker-pritunl
-    privileged: true
     ports:
       - "443"
-      - "1194"
-      - "1194/udp"
+    environment:
+      # http://gliderlabs.com/registrator/latest/user/services/#container-overrides
+      - SERVICE_NAME=pritunl
     restart: always
 
