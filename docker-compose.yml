@@ -116,5 +116,8 @@ services:
     volumes:
       - /dockerfs/pritunl/pritunl:/var/lib/pritunl
       - /dockerfs/pritunl/mongodb:/var/lib/mongodb
+    networks:
+      default:
+        ipv4_address: 192.168.240.129
     restart: always
 
