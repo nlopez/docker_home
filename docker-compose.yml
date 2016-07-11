@@ -15,7 +15,7 @@ networks:
 services:
   consul:
     container_name: consul
-    image: gliderlabs/consul-server
+    image: gliderlabs/consul-server:latest
     command: -bootstrap
     restart: always
     networks:
@@ -24,10 +24,10 @@ services:
 
   registrator:
     container_name: registrator
-    image: gliderlabs/registrator
+    image: gliderlabs/registrator:latest
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
-    command: consul://consul:8500
+    command: -internal consul://consul:8500
     restart: always
     depends_on:
       - consul
@@ -36,7 +36,7 @@ services:
     container_name: nzbget
     image: linuxserver/nzbget
     ports:
-      - "6789:6789"
+      - "6789"
     volumes:
       - /dockerfs/nzbget/config:/config
       - /dockerfs/nzbget/config:/downloads
@@ -48,7 +48,7 @@ services:
     container_name: sonarr
     image: linuxserver/sonarr
     ports:
-      - "8989:8989"
+      - "8989"
     volumes:
       - /dockerfs/sonarr/config:/config
       - /mnt/media:/media
@@ -61,7 +61,7 @@ services:
     container_name: couchpotato
     image: linuxserver/couchpotato
     ports:
-      - "5050:5050"
+      - "5050"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/couchpotato/config:/config
@@ -74,7 +74,7 @@ services:
     container_name: plexpy
     image: linuxserver/plexpy
     ports:
-      - "8181:8181"
+      - "8181"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/plexpy/config:/config
@@ -86,7 +86,7 @@ services:
     container_name: deluge
     image: linuxserver/deluge
     ports:
-      - "8112:8112"
+      - "8112"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/deluge/config:/config
@@ -99,7 +99,7 @@ services:
     image: linuxserver/syncthing
     env_file: env
     ports:
-      - "8384:8384"
+      - "8384"
     volumes:
       - /dockerfs/syncthing/config:/config
       - /mnt/syncthing:/mnt/syncthing
@@ -110,8 +110,8 @@ services:
     image: michelkaeser/docker-pritunl
     privileged: true
     ports:
-      - "443:443"
-      - "1194:1194"
-      - "1194:1194/udp"
+      - "443"
+      - "1194"
+      - "1194/udp"
     restart: always
 
