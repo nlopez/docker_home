@@ -8,9 +8,9 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 192.168.239.0/24
-          ip_range: 192.168.239.64/27 # 192.168.239.65-94
-          gateway: 192.168.239.1
+        - subnet: 192.168.240.0/24
+          ip_range: 192.168.240.0/25
+          gateway: 192.168.240.1
 
 services:
   consul:
@@ -20,7 +20,7 @@ services:
     restart: always
     networks:
       default:
-        ipv4_address: 192.168.239.65
+        ipv4_address: 192.168.240.128
 
   registrator:
     container_name: registrator
@@ -43,8 +43,6 @@ services:
       - /mnt/media/downloads:/downloads_actual
     env_file: env
     restart: always
-    depends_on:
-      - registrator
 
   sonarr:
     container_name: sonarr
@@ -58,8 +56,6 @@ services:
       - /mnt/media/downloads:/downloads_actual
     env_file: env
     restart: always
-    depends_on:
-      - registrator
 
   couchpotato:
     container_name: couchpotato
@@ -73,8 +69,6 @@ services:
       - /mnt/media/movies:/movies
     env_file: env
     restart: always
-    depends_on:
-      - registrator
 
   plexpy:
     container_name: plexpy
@@ -87,8 +81,6 @@ services:
       - /mnt/plex_logs:/logs:ro
     env_file: env
     restart: always
-    depends_on:
-      - registrator
 
   deluge:
     container_name: deluge
@@ -101,8 +93,6 @@ services:
       - /mnt/media/downloads:/media/downloads
     env_file: env
     restart: always
-    depends_on:
-      - registrator
 
   syncthing:
     container_name: syncthing
@@ -114,8 +104,6 @@ services:
       - /dockerfs/syncthing/config:/config
       - /mnt/syncthing:/mnt/syncthing
     restart: always
-    depends_on:
-      - registrator
 
   pritunl:
     container_name: pritunl
@@ -126,6 +114,4 @@ services:
       - "1194:1194"
       - "1194:1194/udp"
     restart: always
-    depends_on:
-      - registrator
 
