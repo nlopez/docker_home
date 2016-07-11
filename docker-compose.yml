@@ -96,7 +96,7 @@ services:
 
   syncthing:
     container_name: syncthing
-    image: linuxserver/syncthing
+    image: linuxserver/syncthing:latest
     env_file: env
     ports:
       - "8384"
@@ -119,5 +119,6 @@ services:
     networks:
       default:
         ipv4_address: 192.168.240.129
+    privileged: true
     restart: always
 
