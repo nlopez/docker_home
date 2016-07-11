@@ -1,6 +1,37 @@
 version: "2"
 
+networks:
+  default:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.239.0/24
+          ip_range: 192.168.239.64/27 # 192.168.239.65-94
+          gateway: 192.168.239.1
+
 services:
+  consul:
+    container_name: consul
+    image: gliderlabs/consul-server
+    command: -bootstrap
+    restart: always
+    networks:
+      default:
+        ipv4_address: 192.168.239.65
+
+  registrator:
+    container_name: registrator
+    image: gliderlabs/registrator
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    command: consul://consul:8500
+    restart: always
+    depends_on:
+      - consul
+
   nzbget:
     container_name: nzbget
     image: linuxserver/nzbget
@@ -12,6 +43,8 @@ services:
       - /mnt/media/downloads:/downloads_actual
     env_file: env
     restart: always
+    depends_on:
+      - registrator
 
   sonarr:
     container_name: sonarr
@@ -25,6 +58,8 @@ services:
       - /mnt/media/downloads:/downloads_actual
     env_file: env
     restart: always
+    depends_on:
+      - registrator
 
   couchpotato:
     container_name: couchpotato
@@ -38,6 +73,8 @@ services:
       - /mnt/media/movies:/movies
     env_file: env
     restart: always
+    depends_on:
+      - registrator
 
   plexpy:
     container_name: plexpy
@@ -50,41 +87,45 @@ services:
       - /mnt/plex_logs:/logs:ro
     env_file: env
     restart: always
+    depends_on:
+      - registrator
 
   deluge:
     container_name: deluge
     image: linuxserver/deluge
+    ports:
+      - "8112:8112"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/deluge/config:/config
       - /mnt/media/downloads:/media/downloads
     env_file: env
-    network_mode: host
     restart: always
-
-  consul:
-    container_name: consul
-    image: gliderlabs/consul-server
-    network_mode: host
-    command: -bind 192.168.239.6 -bootstrap
-    restart: always
-
-  registrator:
-    container_name: registrator
-    image: gliderlabs/registrator:v6
-    network_mode: host
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock
-    command: consul://localhost:8500
-    restart: always
+    depends_on:
+      - registrator
 
   syncthing:
     container_name: syncthing
     image: linuxserver/syncthing
-    network_mode: host
     env_file: env
+    ports:
+      - "8384:8384"
     volumes:
       - /dockerfs/syncthing/config:/config
       - /mnt/syncthing:/mnt/syncthing
     restart: always
+    depends_on:
+      - registrator
+
+  pritunl:
+    container_name: pritunl
+    image: michelkaeser/docker-pritunl
+    privileged: true
+    ports:
+      - "443:443"
+      - "1194:1194"
+      - "1194:1194/udp"
+    restart: always
+    depends_on:
+      - registrator
 
