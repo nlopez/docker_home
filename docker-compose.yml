@@ -27,7 +27,7 @@ services:
     image: gliderlabs/registrator:latest
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
-    command: -internal consul://consul:8500
+    command: -internal -resync 60 consul://consul:8500
     restart: always
     depends_on:
       - consul
