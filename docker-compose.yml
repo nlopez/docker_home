@@ -139,17 +139,4 @@ services:
       default:
         ipv4_address: 192.168.240.130
 
-  dnsmasq:
-    container_name: dnsmasq
-    image: thalweg/dnsmasq
-    env_file: env
-    ports:
-      - "53/udp"
-      - "53/tcp"
-    volumes:
-      - /dockerfs/dnsmasq/config:/config
-    restart: always
-    networks:
-      default:
-        ipv4_address: 192.168.240.131
-
+  
