@@ -1,2 +1,1 @@
 secret.env filter=git-crypt diff=git-crypt
-owncloud_db_secrets.env filter=git-crypt diff=git-crypt

@@ -41,7 +41,7 @@ services:
       - /dockerfs/nzbget/config:/config
       - /dockerfs/nzbget/config:/downloads
       - /mnt/media/downloads:/downloads_actual
-    env_file: env
+    env_file: common.env
     restart: always
 
   sonarr:
@@ -54,7 +54,7 @@ services:
       - /mnt/media:/media
       - /dev/rtc:/dev/rtc:ro
       - /mnt/media/downloads:/downloads_actual
-    env_file: env
+    env_file: common.env
     restart: always
 
   couchpotato:
@@ -67,7 +67,7 @@ services:
       - /dockerfs/couchpotato/config:/config
       - /mnt/media/downloads:/downloads
       - /mnt/media/movies:/movies
-    env_file: env
+    env_file: common.env
     restart: always
 
   plexpy:
@@ -79,25 +79,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/plexpy/config:/config
       - /mnt/plex_logs:/logs:ro
-    env_file: env
-    restart: always
-
-  deluge:
-    container_name: deluge
-    image: linuxserver/deluge
-    ports:
-      - "8112"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /dockerfs/deluge/config:/config
-      - /mnt/media/downloads:/media/downloads
-    env_file: env
+    env_file: common.env
     restart: always
 
   syncthing:
     container_name: syncthing
     image: linuxserver/syncthing:latest
-    env_file: env
+    env_file: common.env
     ports:
       - "8384"
     volumes:
@@ -125,7 +113,7 @@ services:
   unifi:
     container_name: unifi
     image: linuxserver/unifi
-    env_file: env
+    env_file: common.env
     ports:
       - "8080"
       - "8081"
@@ -139,4 +127,29 @@ services:
       default:
         ipv4_address: 192.168.240.130
 
-  
+  deluge:
+    container_name: deluge
+    image: linuxserver/deluge
+    ports:
+      - "8112"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dockerfs/deluge/config:/config
+      - /mnt/media/downloads:/media/downloads
+    env_file: common.env
+    restart: always
+    networks:
+      default:
+        ipv4_address: 192.168.240.131
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:develop
+    ports:
+      - "3000:3000"
+    volumes:
+      - "/dockerfs/grafana/data:/var/lib/grafana"
+    env_file: 
+      - common.env
+      - grafana.env
+    restart: always
