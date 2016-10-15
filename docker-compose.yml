@@ -142,14 +142,27 @@ services:
       default:
         ipv4_address: 192.168.240.131
 
+  influxdb:
+    container_name: influxdb
+    image: influxdb
+    ports:
+      - "8083"
+      - "8086"
+      - "2003"
+    volumes:
+      - "/dockerfs/influxdb/data:/var/lib/influxdb"
+    restart: always
+    env_file: influxdb.env
+    networks:
+      default:
+        ipv4_address: 192.168.240.132
+
   grafana:
     container_name: grafana
     image: grafana/grafana:develop
     ports:
-      - "3000:3000"
+      - "3000"
     volumes:
       - "/dockerfs/grafana/data:/var/lib/grafana"
-    env_file: 
-      - common.env
-      - grafana.env
     restart: always
+
