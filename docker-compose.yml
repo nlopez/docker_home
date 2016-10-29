@@ -65,7 +65,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/couchpotato/config:/config
-      - /mnt/media/downloads:/downloads
+      - /mnt/media/downloads:/downloads_actual
       - /mnt/media/movies:/movies
     env_file: common.env
     restart: always
