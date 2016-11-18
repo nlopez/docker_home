@@ -157,6 +157,33 @@ services:
       default:
         ipv4_address: 192.168.240.132
 
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    command: -storage.local.path=/prometheus-data -config.file=/etc/prometheus.yml
+    ports:
+      - "9090"
+    volumes:
+      - "/dockerfs/prometheus/data:/prometheus-data"
+      - "/dockerfs/prometheus/prometheus.yml:/etc/prometheus.yml"
+    restart: always
+    networks:
+      default:
+        ipv4_address: 192.168.240.133
+
+  graphite-exporter:
+    container_name: graphite-exporter
+    image: prom/graphite-exporter
+    command: -graphite.listen-address=":2003"
+    ports:
+      - "9108"
+      - "2003"
+      - "2003/udp"
+    restart: always
+    networks:
+      default:
+        ipv4_address: 192.168.240.134
+
   grafana:
     container_name: grafana
     image: grafana/grafana:latest
