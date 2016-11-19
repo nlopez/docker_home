@@ -88,10 +88,15 @@ services:
     env_file: common.env
     ports:
       - "8384"
+      - "22000"
+      - "21027/udp"
     volumes:
       - /dockerfs/syncthing/config:/config
       - /mnt/syncthing:/mnt/syncthing
     restart: always
+    networks:
+      default:
+        ipv4_address: 192.168.240.135
 
   pritunl:
     container_name: pritunl
@@ -191,5 +196,15 @@ services:
       - "3000"
     volumes:
       - "/dockerfs/grafana/data:/var/lib/grafana"
+    restart: always
+
+  jenkins:
+    container_name: jenkins
+    image: jenkins:latest
+    ports:
+      - "8080"
+      - "50000"
+    volumes:
+      - "/dockerfs/jenkins/data:/var/jenkins_home"
     restart: always
 
