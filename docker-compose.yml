@@ -88,8 +88,8 @@ services:
     env_file: common.env
     ports:
       - "8384"
-      - "22000"
-      - "21027/udp"
+      # - "22000"
+      # - "21027/udp"
     volumes:
       - /dockerfs/syncthing/config:/config
       - /mnt/syncthing:/mnt/syncthing
@@ -200,10 +200,10 @@ services:
 
   jenkins:
     container_name: jenkins
-    image: jenkins:latest
+    image: jenkins:2.7.4-alpine
     ports:
       - "8080"
-      - "50000"
+      # - "50000"
     volumes:
       - "/dockerfs/jenkins/data:/var/jenkins_home"
     restart: always
