@@ -34,7 +34,7 @@ services:
 
   nzbget:
     container_name: nzbget
-    image: linuxserver/nzbget
+    image: linuxserver/nzbget:latest
     ports:
       - "6789"
     volumes:
@@ -46,7 +46,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr
+    image: linuxserver/sonarr:latest
     ports:
       - "8989"
     volumes:
@@ -59,7 +59,7 @@ services:
 
   couchpotato:
     container_name: couchpotato
-    image: linuxserver/couchpotato
+    image: linuxserver/couchpotato:latest
     ports:
       - "5050"
     volumes:
@@ -72,7 +72,7 @@ services:
 
   plexpy:
     container_name: plexpy
-    image: linuxserver/plexpy
+    image: linuxserver/plexpy:latest
     ports:
       - "8181"
     volumes:
@@ -100,7 +100,7 @@ services:
 
   pritunl:
     container_name: pritunl
-    image: michelkaeser/docker-pritunl
+    image: michelkaeser/docker-pritunl:latest
     ports:
       - "443"
     environment:
@@ -117,7 +117,7 @@ services:
 
   unifi:
     container_name: unifi
-    image: linuxserver/unifi
+    image: linuxserver/unifi:latest
     env_file: common.env
     ports:
       - "8080"
@@ -134,7 +134,7 @@ services:
 
   deluge:
     container_name: deluge
-    image: linuxserver/deluge
+    image: linuxserver/deluge:latest
     ports:
       - "8112"
     volumes:
@@ -147,56 +147,56 @@ services:
       default:
         ipv4_address: 192.168.240.131
 
-  influxdb:
-    container_name: influxdb
-    image: influxdb
-    ports:
-      - "8083"
-      - "8086"
-      - "2003"
-    volumes:
-      - "/dockerfs/influxdb/data:/var/lib/influxdb"
-    restart: always
-    env_file: influxdb.env
-    networks:
-      default:
-        ipv4_address: 192.168.240.132
+  # influxdb:
+  #   container_name: influxdb
+  #   image: influxdb:latest
+  #   ports:
+  #     - "8083"
+  #     - "8086"
+  #     - "2003"
+  #   volumes:
+  #     - "/dockerfs/influxdb/data:/var/lib/influxdb"
+  #   restart: always
+  #   env_file: influxdb.env
+  #   networks:
+  #     default:
+  #       ipv4_address: 192.168.240.132
 
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus
-    command: -storage.local.path=/prometheus-data -config.file=/etc/prometheus.yml
-    ports:
-      - "9090"
-    volumes:
-      - "/dockerfs/prometheus/data:/prometheus-data"
-      - "/dockerfs/prometheus/prometheus.yml:/etc/prometheus.yml"
-    restart: always
-    networks:
-      default:
-        ipv4_address: 192.168.240.133
+  # prometheus:
+  #   container_name: prometheus
+  #   image: prom/prometheus:latest
+  #   command: -storage.local.path=/prometheus-data -config.file=/etc/prometheus.yml
+  #   ports:
+  #     - "9090"
+  #   volumes:
+  #     - "/dockerfs/prometheus/data:/prometheus-data"
+  #     - "/dockerfs/prometheus/prometheus.yml:/etc/prometheus.yml"
+  #   restart: always
+  #   networks:
+  #     default:
+  #       ipv4_address: 192.168.240.133
 
-  graphite-exporter:
-    container_name: graphite-exporter
-    image: prom/graphite-exporter
-    command: -graphite.listen-address=":2003"
-    ports:
-      - "9108"
-      - "2003"
-      - "2003/udp"
-    restart: always
-    networks:
-      default:
-        ipv4_address: 192.168.240.134
+  # graphite-exporter:
+  #   container_name: graphite-exporter
+  #   image: prom/graphite-exporter:latest
+  #   command: -graphite.listen-address=":2003"
+  #   ports:
+  #     - "9108"
+  #     - "2003"
+  #     - "2003/udp"
+  #   restart: always
+  #   networks:
+  #     default:
+  #       ipv4_address: 192.168.240.134
 
-  grafana:
-    container_name: grafana
-    image: grafana/grafana:latest
-    ports:
-      - "3000"
-    volumes:
-      - "/dockerfs/grafana/data:/var/lib/grafana"
-    restart: always
+  # grafana:
+  #   container_name: grafana
+  #   image: grafana/grafana:latest
+  #   ports:
+  #     - "3000"
+  #   volumes:
+  #     - "/dockerfs/grafana/data:/var/lib/grafana"
+  #   restart: always
 
   jenkins:
     container_name: jenkins
