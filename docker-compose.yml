@@ -208,3 +208,21 @@ services:
       - "/dockerfs/jenkins/data:/var/jenkins_home"
     restart: always
 
+  oauth2_proxy:
+    container_name: oauth2_proxy
+    image: zappi/oauth2_proxy
+    env_file: secret.env
+    volumes:
+      - /dockerfs/oauth2_proxy/config:/etc/oauth2_proxy:ro
+    command: >
+      --upstream="file:///dev/null"
+      --http-address="0.0.0.0:4180"
+      --cookie-refresh="1h"
+      --cookie-domain=".desertbluffs.com"
+      --cookie-secure=true
+      --cookie-httponly=true
+      --authenticated-emails-file="/etc/oauth2_proxy/authenticated_emails"
+    restart: always
+    networks:
+      default:
+        ipv4_address: 192.168.240.136
