@@ -15,8 +15,11 @@ networks:
 services:
   consul:
     container_name: consul
-    image: gliderlabs/consul-server:latest
-    command: -bootstrap
+    image: consul
+    volumes:
+      - /dockerfs/consul/data:/consul/data
+      - /dockerfs/consul/config:/consul/config
+    command: consul agent -server -client=0.0.0.0 -bootstrap-expect=1 -data-dir /consul/data -ui
     restart: always
     networks:
       default:
