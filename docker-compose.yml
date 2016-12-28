@@ -27,7 +27,7 @@ services:
 
   registrator:
     container_name: registrator
-    image: gliderlabs/registrator:latest
+    image: gliderlabs/registrator
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     command: -internal -resync 60 consul://consul:8500
@@ -37,7 +37,7 @@ services:
 
   nzbget:
     container_name: nzbget
-    image: linuxserver/nzbget:latest
+    image: linuxserver/nzbget
     ports:
       - "6789"
     volumes:
@@ -49,7 +49,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:latest
+    image: linuxserver/sonarr
     ports:
       - "8989"
     volumes:
@@ -62,7 +62,7 @@ services:
 
   couchpotato:
     container_name: couchpotato
-    image: linuxserver/couchpotato:latest
+    image: linuxserver/couchpotato
     ports:
       - "5050"
     volumes:
@@ -75,7 +75,7 @@ services:
 
   plexpy:
     container_name: plexpy
-    image: linuxserver/plexpy:latest
+    image: linuxserver/plexpy
     ports:
       - "8181"
     volumes:
@@ -87,7 +87,7 @@ services:
 
   syncthing:
     container_name: syncthing
-    image: linuxserver/syncthing:latest
+    image: linuxserver/syncthing
     env_file: common.env
     ports:
       - "8384"
@@ -103,7 +103,7 @@ services:
 
   pritunl:
     container_name: pritunl
-    image: michelkaeser/docker-pritunl:latest
+    image: michelkaeser/docker-pritunl
     ports:
       - "443"
     environment:
@@ -120,7 +120,7 @@ services:
 
   unifi:
     container_name: unifi
-    image: linuxserver/unifi:latest
+    image: linuxserver/unifi
     env_file: common.env
     ports:
       - "8080"
@@ -137,7 +137,7 @@ services:
 
   deluge:
     container_name: deluge
-    image: linuxserver/deluge:latest
+    image: linuxserver/deluge
     ports:
       - "8112"
     volumes:
@@ -152,7 +152,7 @@ services:
 
   # influxdb:
   #   container_name: influxdb
-  #   image: influxdb:latest
+  #   image: influxdb
   #   ports:
   #     - "8083"
   #     - "8086"
@@ -167,7 +167,7 @@ services:
 
   # prometheus:
   #   container_name: prometheus
-  #   image: prom/prometheus:latest
+  #   image: prom/prometheus
   #   command: -storage.local.path=/prometheus-data -config.file=/etc/prometheus.yml
   #   ports:
   #     - "9090"
@@ -181,7 +181,7 @@ services:
 
   # graphite-exporter:
   #   container_name: graphite-exporter
-  #   image: prom/graphite-exporter:latest
+  #   image: prom/graphite-exporter
   #   command: -graphite.listen-address=":2003"
   #   ports:
   #     - "9108"
@@ -194,7 +194,7 @@ services:
 
   # grafana:
   #   container_name: grafana
-  #   image: grafana/grafana:latest
+  #   image: grafana/grafana
   #   ports:
   #     - "3000"
   #   volumes:
