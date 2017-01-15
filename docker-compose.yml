@@ -229,19 +229,3 @@ services:
     networks:
       default:
         ipv4_address: 192.168.240.136
-
-  pihole:
-    container_name: pihole
-    image: diginc/pi-hole:alpine
-    environment:
-      - ServerIP=192.168.240.137
-      - DNS1=192.168.239.1
-    volumes:
-      - "/dockerfs/pihole/etc:/etc/pihole"
-      - "/dockerfs/pihole/pihole.log:/var/log/pihole.log"
-    ports:
-      - "80"
-    restart: always
-    networks:
-      default:
-        ipv4_address: 192.168.240.137
