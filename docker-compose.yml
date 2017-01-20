@@ -21,6 +21,10 @@ services:
       - /dockerfs/consul/config:/consul/config
     command: consul agent -server -client=0.0.0.0 -bootstrap-expect=1 -data-dir /consul/data -ui
     restart: always
+    read_only: true
+    tmpfs:
+      - /run
+      - /tmp
     networks:
       default:
         ipv4_address: 192.168.240.128
@@ -32,6 +36,10 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock
     command: -internal -resync 60 consul://consul:8500
     restart: always
+    read_only: true
+    tmpfs:
+      - /run
+      - /tmp
     depends_on:
       - consul
 
@@ -206,10 +214,13 @@ services:
     image: jenkins:alpine
     ports:
       - "8080"
-      # - "50000"
     volumes:
       - "/dockerfs/jenkins/data:/var/jenkins_home"
     restart: always
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run
 
   oauth2_proxy:
     container_name: oauth2_proxy
@@ -226,6 +237,10 @@ services:
       --cookie-httponly=true
       --authenticated-emails-file="/etc/oauth2_proxy/authenticated_emails"
     restart: always
+    read_only: true
+    tmpfs:
+      - /run
+      - /tmp
     networks:
       default:
         ipv4_address: 192.168.240.136
@@ -238,6 +253,9 @@ services:
     volumes:
       - /dockerfs/gitea/data:/data
     restart: always
+    tmpfs:
+      - /run
+      - /tmp
     networks:
       default:
         ipv4_address: 192.168.240.137
@@ -250,4 +268,9 @@ services:
     env_file: 
       - env/gitea-mysql
       - env/private/gitea-mysql
+    command: mysqld --pid-file /var/lib/mysql/mysqld.pid --socket /var/lib/mysql/mysqld.sock
     restart: always
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run
