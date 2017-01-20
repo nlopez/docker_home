@@ -44,7 +44,7 @@ services:
       - /dockerfs/nzbget/config:/config
       - /dockerfs/nzbget/config:/downloads
       - /mnt/media/downloads:/downloads_actual
-    env_file: common.env
+    env_file: env/common
     restart: always
 
   sonarr:
@@ -57,7 +57,7 @@ services:
       - /mnt/media:/media
       - /dev/rtc:/dev/rtc:ro
       - /mnt/media/downloads:/downloads_actual
-    env_file: common.env
+    env_file: env/common
     restart: always
 
   couchpotato:
@@ -70,7 +70,7 @@ services:
       - /dockerfs/couchpotato/config:/config
       - /mnt/media/downloads:/downloads_actual
       - /mnt/media/movies:/movies
-    env_file: common.env
+    env_file: env/common
     restart: always
 
   plexpy:
@@ -82,13 +82,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/plexpy/config:/config
       - /mnt/plex_logs:/logs:ro
-    env_file: common.env
+    env_file: env/common
     restart: always
 
   syncthing:
     container_name: syncthing
     image: linuxserver/syncthing
-    env_file: common.env
+    env_file: env/common
     ports:
       - "8384"
       # - "22000"
@@ -121,7 +121,7 @@ services:
   unifi:
     container_name: unifi
     image: linuxserver/unifi
-    env_file: common.env
+    env_file: env/common
     ports:
       - "8080"
       - "8081"
@@ -144,7 +144,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/deluge/config:/config
       - /mnt/media/downloads:/media/downloads
-    env_file: common.env
+    env_file: env/common
     restart: always
     networks:
       default:
@@ -160,7 +160,7 @@ services:
   #   volumes:
   #     - "/dockerfs/influxdb/data:/var/lib/influxdb"
   #   restart: always
-  #   env_file: influxdb.env
+  #   env_file: env/influxdb
   #   networks:
   #     default:
   #       ipv4_address: 192.168.240.132
@@ -214,7 +214,7 @@ services:
   oauth2_proxy:
     container_name: oauth2_proxy
     image: zappi/oauth2_proxy
-    env_file: secret.env
+    env_file: env/private/oauth2_proxy
     volumes:
       - /dockerfs/oauth2_proxy/config:/etc/oauth2_proxy:ro
     command: >
@@ -229,3 +229,23 @@ services:
     networks:
       default:
         ipv4_address: 192.168.240.136
+
+  gitea:
+    container_name: gitea
+    image: gitea/gitea
+    volumes:
+      - /dockerfs/gitea/data:/data
+    restart: always
+    networks:
+      default:
+        ipv4_address: 192.168.240.137
+
+  gitea-mysql:
+    container_name: gitea-mysql
+    image: mysql
+    volumes:
+      - /dockerfs/gitea-mysql/data:/var/lib/mysql
+    env_file: 
+      - env/gitea-mysql
+      - env/private/gitea-mysql
+    restart: always
