@@ -93,22 +93,6 @@ services:
     env_file: env/common
     restart: always
 
-  syncthing:
-    container_name: syncthing
-    image: linuxserver/syncthing
-    env_file: env/common
-    ports:
-      - "8384"
-      # - "22000"
-      # - "21027/udp"
-    volumes:
-      - /dockerfs/syncthing/config:/config
-      - /mnt/syncthing:/mnt/syncthing
-    restart: always
-    networks:
-      default:
-        ipv4_address: 192.168.240.135
-
   pritunl:
     container_name: pritunl
     image: michelkaeser/docker-pritunl
@@ -157,57 +141,6 @@ services:
     networks:
       default:
         ipv4_address: 192.168.240.131
-
-  # influxdb:
-  #   container_name: influxdb
-  #   image: influxdb
-  #   ports:
-  #     - "8083"
-  #     - "8086"
-  #     - "2003"
-  #   volumes:
-  #     - "/dockerfs/influxdb/data:/var/lib/influxdb"
-  #   restart: always
-  #   env_file: env/influxdb
-  #   networks:
-  #     default:
-  #       ipv4_address: 192.168.240.132
-
-  # prometheus:
-  #   container_name: prometheus
-  #   image: prom/prometheus
-  #   command: -storage.local.path=/prometheus-data -config.file=/etc/prometheus.yml
-  #   ports:
-  #     - "9090"
-  #   volumes:
-  #     - "/dockerfs/prometheus/data:/prometheus-data"
-  #     - "/dockerfs/prometheus/prometheus.yml:/etc/prometheus.yml"
-  #   restart: always
-  #   networks:
-  #     default:
-  #       ipv4_address: 192.168.240.133
-
-  # graphite-exporter:
-  #   container_name: graphite-exporter
-  #   image: prom/graphite-exporter
-  #   command: -graphite.listen-address=":2003"
-  #   ports:
-  #     - "9108"
-  #     - "2003"
-  #     - "2003/udp"
-  #   restart: always
-  #   networks:
-  #     default:
-  #       ipv4_address: 192.168.240.134
-
-  # grafana:
-  #   container_name: grafana
-  #   image: grafana/grafana
-  #   ports:
-  #     - "3000"
-  #   volumes:
-  #     - "/dockerfs/grafana/data:/var/lib/grafana"
-  #   restart: always
 
   jenkins:
     container_name: jenkins
