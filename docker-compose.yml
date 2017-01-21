@@ -51,7 +51,7 @@ services:
     volumes:
       - /dockerfs/nzbget/config:/config
       - /dockerfs/nzbget/config:/downloads
-      - /mnt/media/downloads:/downloads_actual
+      - /net/freenas.radoncanyon.com/mnt/etank/media/downloads:/downloads_actual
     env_file: env/common
     restart: always
 
@@ -62,9 +62,9 @@ services:
       - "8989"
     volumes:
       - /dockerfs/sonarr/config:/config
-      - /mnt/media:/media
+      - /net/freenas.radoncanyon.com/mnt/etank/media:/media
       - /dev/rtc:/dev/rtc:ro
-      - /mnt/media/downloads:/downloads_actual
+      - /net/freenas.radoncanyon.com/mnt/etank/media/downloads:/downloads_actual
     env_file: env/common
     restart: always
 
@@ -76,8 +76,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/couchpotato/config:/config
-      - /mnt/media/downloads:/downloads_actual
-      - /mnt/media/movies:/movies
+      - /net/freenas.radoncanyon.com/mnt/etank/media/downloads:/downloads_actual
+      - /net/freenas.radoncanyon.com/mnt/etank/media/movies:/movies
     env_file: env/common
     restart: always
 
@@ -135,7 +135,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /dockerfs/deluge/config:/config
-      - /mnt/media/downloads:/media/downloads
+      - /net/freenas.radoncanyon.com/mnt/etank/media/downloads:/media/downloads
     env_file: env/common
     restart: always
     networks:
