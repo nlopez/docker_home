@@ -1,1 +1,1 @@
-env/private/* filter=git-crypt diff=git-crypt
+**/env/private/* filter=git-crypt diff=git-crypt
