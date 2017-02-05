@@ -4,7 +4,7 @@ variable "port" { default = 2376 }
 variable "scheme" { default = "tcp" }
 variable "subnet" { default = "172.16.8.0/22" }
 variable "ip_range" {}
-variable "parent" { default = "eno1" }
+variable "parent" { default = "eth0" }
 variable "gateway" { default = "172.16.8.1" }
 
 provider "docker" {

@@ -2,7 +2,6 @@ module "cecil" {
   source = "./module/docker_host"
   name = "cecil"
   ip_range = "172.16.9.0/24"
-  parent = "eth1"
 }
 
 module "biggs" {

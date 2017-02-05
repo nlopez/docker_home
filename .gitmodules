@@ -1,3 +1,0 @@
-[submodule "nzbget"]
-	path = nzbget
-	url = https://github.com/thalweg/docker-nzbget.git
