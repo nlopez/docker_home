@@ -1,0 +1,6 @@
+GF_SERVER_DOMAIN=grafana.desertbluffs.com
+GF_SERVER_ENFORCE_DOMAIN=true
+GF_SERVER_PROTOCOL=https
+GF_SERVER_ROOT_URL=https://grafana.desertbluffs.com
+GF_SESSION_COOKIE_SECURE=true
+GF_USERS_ALLOW_SIGN_UP=false
