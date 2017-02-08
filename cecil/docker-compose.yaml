@@ -2,7 +2,7 @@ version: '2.1'
 
 networks:
 
-  physical:
+  default:
     driver: macvlan
     driver_opts:
       parent: eth0
@@ -35,17 +35,48 @@ services:
       - /dockerfs/consul/config:/consul/config
       - /dockerfs/consul/data:/consul/data
     networks:
-      physical:
+      default:
         ipv4_address: 192.168.226.0
+
 
   registrator:
     image: gliderlabs/registrator
     container_name: registrator
     command: >-
-      -internal=true 
-      -retry-attempts=-1
+      -cleanup
+      -internal
       consul://consul:8500 
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - consul
+
+  # traefik:
+  #   image: traefik
+  #   container_name: traefik
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - /dockerfs/traefik/config:/etc/traefik
+  #     - /dockerfs/traefik/config/acme/acme.json:/acme.json
+  #   command: >-
+  #     traefik
+  #     --web
+  #     --debug
+  #     --configfile=/etc/traefik/traefik.toml
+  #   env_file:
+  #     - env/private/aws
+  #   networks:
+  #     default:
+  #       ipv4_address: 192.168.226.254
+
+  pritunl:
+    image: michelkaeser/docker-pritunl
+    container_name: pritunl
+    volumes:
+      - /dockerfs/pritunl/pritunl:/var/lib/pritunl
+      - /dockerfs/pritunl/mongodb:/var/lib/mongodb
+    privileged: true
     networks:
-      physical:
+      default:
+        ipv4_address: 192.168.226.255
+

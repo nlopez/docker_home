@@ -2,7 +2,7 @@ version: '2.1'
 
 networks:
 
-  physical:
+  default:
     driver: macvlan
     driver_opts:
       parent: eth0
@@ -35,18 +35,51 @@ services:
       - /dockerfs/consul/config:/consul/config
       - /dockerfs/consul/data:/consul/data
     networks:
-      physical:
+      default:
         ipv4_address: 192.168.225.0
 
   registrator:
     image: gliderlabs/registrator
     container_name: registrator
     command: >-
-        -internal=true 
-        -retry-attempts=-1
-        consul://consul:8500 
+      -cleanup
+      -internal
+      consul://consul:8500 
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    networks:
-      physical:
+    depends_on:
+      - consul
 
+  nzbget:
+    image: linuxserver/nzbget
+    container_name: nzbget
+    volumes:
+      - /dockerfs/nzbget/config:/config
+      - /mnt/downloads:/downloads
+    environment:
+      - 'TZ=America/New_York'
+      - 'PUID=1001'
+      - 'PGID=1001'
+        
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    volumes:
+      - /dockerfs/sonarr/config:/config
+      - /mnt/downloads:/downloads
+      - /mnt/media:/media
+      - /dev/rtc:/dev/rtc:ro 
+    environment:
+      - 'PUID=1001'
+      - 'PGID=1001'
+
+  couchpotato:
+    image: linuxserver/couchpotato
+    container_name: couchpotato
+    volumes:
+      - /dockerfs/couchpotato/config:/config
+      - /mnt/downloads:/downloads
+      - /mnt/media/movies:/movies
+    environment:
+      - 'PUID=1001'
+      - 'PGID=1001'
