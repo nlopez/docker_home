@@ -41,7 +41,10 @@ services:
   registrator:
     image: gliderlabs/registrator
     container_name: registrator
-    command: consul://consul:8500
+    command: >-
+        -internal=true 
+        -retry-attempts=-1
+        consul://consul:8500 
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
