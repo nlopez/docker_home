@@ -1,0 +1,26 @@
+version: '2.1'
+
+networks:
+
+  physical:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.240.0/24
+          gateway: 192.168.240.1
+
+services:
+
+  pritunl:
+    image: michelkaeser/docker-pritunl
+    container_name: pritunl
+    volumes:
+      - /dockerfs/pritunl/pritunl:/var/lib/pritunl
+      - /dockerfs/pritunl/mongodb:/var/lib/mongodb
+    networks:
+      physical:
+        ipv4_address: 192.168.240.3
+    privileged: true
