@@ -1,0 +1,55 @@
+version: '2.1'
+
+networks:
+
+  physical:
+    external:
+      name: biggs_physical
+
+services:
+
+  nzbget:
+    image: linuxserver/nzbget
+    container_name: nzbget
+    volumes:
+      - /dockerfs/nzbget/config:/config
+      - /mnt/downloads:/downloads
+    ports:
+      - "6789:6789/tcp"
+    environment:
+      - 'TZ=America/New_York'
+      - 'PUID=1001'
+      - 'PGID=1001'
+    networks:
+      physical:
+        
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    volumes:
+      - /dockerfs/sonarr/config:/config
+      - /mnt/downloads:/downloads
+      - /mnt/media:/media
+      - /dev/rtc:/dev/rtc:ro 
+    ports:
+      - "8989:8989/tcp"
+    environment:
+      - 'PUID=1001'
+      - 'PGID=1001'
+    networks:
+      physical:
+
+  couchpotato:
+    image: linuxserver/couchpotato
+    container_name: couchpotato
+    volumes:
+      - /dockerfs/couchpotato/config:/config
+      - /mnt/downloads:/downloads
+      - /mnt/media/movies:/movies
+    ports:
+      - "5050:5050/tcp"
+    environment:
+      - 'PUID=1001'
+      - 'PGID=1001'
+    networks:
+      physical:

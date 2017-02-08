@@ -3,14 +3,8 @@ version: '2.1'
 networks:
 
   physical:
-    driver: macvlan
-    driver_opts:
-      parent: eth0
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.240.0/24
-          gateway: 192.168.240.1
+    external:
+      name: cecil_physical
 
 services:
 
@@ -22,5 +16,5 @@ services:
       - /dockerfs/pritunl/mongodb:/var/lib/mongodb
     networks:
       physical:
-        ipv4_address: 192.168.240.3
+        ipv4_address: 192.168.226.255
     privileged: true
