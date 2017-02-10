@@ -34,6 +34,8 @@ services:
     volumes:
       - /dockerfs/consul/config:/consul/config
       - /dockerfs/consul/data:/consul/data
+    healthcheck:
+      test: "curl --fail localhost:8500/v1/agent/self || exit 1"
     networks:
       default:
         ipv4_address: 192.168.227.0
@@ -42,14 +44,19 @@ services:
     image: gliderlabs/registrator
     container_name: registrator
     command: >-
+      -retry-attempts=-1
+      -ttl=30
+      -ttl-refresh=10
+      -resync=60
       -cleanup
       -internal
-      consul://consul:8500 
+      consul://consul:8500
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
-      - consul
-     
+      consul:
+        condition: service_healthy
+
   plex:
     image: plexinc/pms-docker
     container_name: plex
@@ -61,9 +68,13 @@ services:
       - 'TZ=America/New_York'
       - 'PLEX_UID=1001'
       - 'PLEX_GID=1001'
+      - 'SERVICE_NAME=plex'
+      - 'SERVICE_TAGS=traefik.tags=production'
     networks:
       default:
         ipv4_address: 192.168.227.255
+    ports:
+      - '32400'
 
   plexpy:
     image: linuxserver/plexpy
@@ -72,10 +83,11 @@ services:
       - /dockerfs/plexpy/config:/config
       - '/dockerfs/pms/config/Library/Application Support/Plex Media Server/Logs/:/logs:ro'
     ports:
-      - "8181:8181/tcp"
+      - '8181'
     environment:
       - 'PUID=1001'
       - 'PGID=1001'
       - 'TZ=America/New_York'
+      - 'SERVICE_TAGS=traefik.tags=production'
     depends_on:
       - plex

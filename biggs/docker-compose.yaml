@@ -34,6 +34,8 @@ services:
     volumes:
       - /dockerfs/consul/config:/consul/config
       - /dockerfs/consul/data:/consul/data
+    healthcheck:
+      test: "curl --fail localhost:8500/v1/agent/self || exit 1"
     networks:
       default:
         ipv4_address: 192.168.225.0
@@ -42,13 +44,18 @@ services:
     image: gliderlabs/registrator
     container_name: registrator
     command: >-
+      -retry-attempts=-1
+      -ttl=30
+      -ttl-refresh=10
+      -resync=60
       -cleanup
       -internal
-      consul://consul:8500 
+      consul://consul:8500
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
-      - consul
+      consul:
+        condition: service_healthy
 
   nzbget:
     image: linuxserver/nzbget
@@ -60,7 +67,10 @@ services:
       - 'TZ=America/New_York'
       - 'PUID=1001'
       - 'PGID=1001'
-        
+      - 'SERVICE_TAGS=traefik.tags=production'
+    ports:
+      - '6789'
+
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -68,10 +78,13 @@ services:
       - /dockerfs/sonarr/config:/config
       - /mnt/downloads:/downloads
       - /mnt/media:/media
-      - /dev/rtc:/dev/rtc:ro 
+      - /dev/rtc:/dev/rtc:ro
     environment:
       - 'PUID=1001'
       - 'PGID=1001'
+      - 'SERVICE_TAGS=traefik.tags=production'
+    ports:
+      - '8989'
 
   couchpotato:
     image: linuxserver/couchpotato
@@ -83,3 +96,6 @@ services:
     environment:
       - 'PUID=1001'
       - 'PGID=1001'
+      - 'SERVICE_TAGS=traefik.tags=production'
+    ports:
+      - '5050'
