@@ -21,9 +21,9 @@ services:
     command: >-
       consul agent
       -server
-      -retry-join=192.168.225.0
-      -retry-join=192.168.226.0
-      -retry-join=192.168.227.0
+      -retry-join=192.168.225.255
+      -retry-join=192.168.226.255
+      -retry-join=192.168.227.255
       -bootstrap-expect=3
       -data-dir /consul/data
       -node=biggs
@@ -38,7 +38,7 @@ services:
       test: "curl --fail localhost:8500/v1/agent/self || exit 1"
     networks:
       default:
-        ipv4_address: 192.168.225.0
+        ipv4_address: 192.168.225.255
 
   registrator:
     image: gliderlabs/registrator
@@ -99,3 +99,49 @@ services:
       - 'SERVICE_TAGS=traefik.tags=production'
     ports:
       - '5050'
+
+  cadvisor:
+    image: google/cadvisor
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    ports:
+      - '8080'
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+      - /dockerfs/grafana/data
+    environment:
+      - 'SERVICE_TAGS=traefik.tags=production'
+    ports:
+      - '3000'
+
+  graphite-exporter:
+    image: prom/graphite-exporter
+    container_name: graphite-exporter
+    command: >-
+      -graphite.listen-address=":2003"
+      -graphite.mapping-config=/tmp/graphite_mapping.conf
+    volumes:
+      - /dockerfs/graphite-exporter/config/graphite_mapping.conf:/tmp/graphite_mapping.conf:ro
+    environment:
+      - 'SERVICE_9108_NAME=graphite-exporter'
+      - 'SERVICE_2003_NAME=graphite-exporter'
+    ports:
+      - '9108'
+      - '2003'
+      - '2003/udp'
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - /dockerfs/prometheus/data:/prometheus
+      - /dockerfs/prometheus/config:/etc/prometheus
+    ports:
+      - '9090'
