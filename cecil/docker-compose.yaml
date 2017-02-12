@@ -39,6 +39,7 @@ services:
     networks:
       default:
         ipv4_address: 192.168.226.255
+    restart: unless-stopped
 
 
   registrator:
@@ -57,6 +58,7 @@ services:
     depends_on:
       consul:
         condition: service_healthy
+    restart: unless-stopped
 
   traefik:
     image: traefik
@@ -68,7 +70,6 @@ services:
     command: >-
       traefik
       --web
-      --debug
       --configfile=/etc/traefik/traefik.toml
     env_file:
       - env/private/aws
@@ -83,6 +84,7 @@ services:
       - 'SERVICE_80_NAME=traefik'
       - 'SERVICE_443_NAME=traefik'
       - 'SERVICE_8080_NAME=traefik'
+    restart: unless-stopped
 
   pritunl:
     image: michelkaeser/docker-pritunl
@@ -99,6 +101,7 @@ services:
     networks:
       default:
         ipv4_address: 192.168.226.254
+    restart: unless-stopped
 
   cadvisor:
     image: google/cadvisor
@@ -110,4 +113,5 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
     ports:
       - '8080'
+    restart: unless-stopped
 

@@ -39,6 +39,7 @@ services:
     networks:
       default:
         ipv4_address: 192.168.227.255
+    restart: unless-stopped
 
   registrator:
     image: gliderlabs/registrator
@@ -56,6 +57,7 @@ services:
     depends_on:
       consul:
         condition: service_healthy
+    restart: unless-stopped
 
   plex:
     image: plexinc/pms-docker
@@ -75,6 +77,7 @@ services:
         ipv4_address: 192.168.227.254
     ports:
       - '32400'
+    restart: unless-stopped
 
   plexpy:
     image: linuxserver/plexpy
@@ -91,6 +94,7 @@ services:
       - 'SERVICE_TAGS=traefik.tags=production'
     depends_on:
       - plex
+    restart: unless-stopped
 
   cadvisor:
     image: google/cadvisor
@@ -102,3 +106,4 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
     ports:
       - '8080'
+    restart: unless-stopped
