@@ -65,7 +65,7 @@ services:
     volumes:
       - /mnt/media:/media:ro
       - /dockerfs/pms/config:/config
-      - /dockerfs/pms/transcode:/transcode'
+      - /dockerfs/pms/transcode:/transcode
     environment:
       - 'TZ=America/New_York'
       - 'PLEX_UID=1001'
